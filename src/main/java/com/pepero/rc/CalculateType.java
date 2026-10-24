@@ -1,4 +1,7 @@
 package com.pepero.rc;
 
-public enum CalculateType {
+enum CalculateType {
+    GLICKO_1,
+    GLICKO_2,
+    ELO
 }

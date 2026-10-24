@@ -2,20 +2,29 @@ package com.pepero.rc;
 
 import static com.pepero.rc.Glicko2Calculator.*;
 
-public class EloCalculator {
-    public static EloCalculateResult calculate(MatchInfo match) {
+public class GlickoCalculator {
+    /**
+     * Calculate the player's rating after the game (for glicko-1, glicko-2)
+     *
+     * @param match finished match
+     * @return rating dto value
+     */
+    public static RatingCalculateResult calculate(MatchInfo match) {
         PlayerRating player1;
         PlayerRating player2;
-        if(match.isGlicko1()) {
+        if (match.calculateType() == CalculateType.GLICKO_1) {
             player1 = glicko1(match, true);
             player2 = glicko1(match, false);
         }
-        else {
+        else if (match.calculateType() == CalculateType.GLICKO_2){
             player1 = glicko2(match, true);
             player2 = glicko2(match, false);
+        } else {
+            throw new IllegalArgumentException("The given MatchInfo's type is incorrect! This class calculates only " +
+                    "Glicko matches!");
         }
 
-        return new EloCalculateResult(player1, player2);
+        return new RatingCalculateResult(player1, player2);
     }
 
     // Glicko-1 constants / functions
