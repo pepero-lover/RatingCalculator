@@ -9,8 +9,6 @@ A glicko-1, glicko-2, elo (fide) calculator on Java 21
 
 ## Example
 
-
-
 ```java
 import com.pepero.rc.*;
 
