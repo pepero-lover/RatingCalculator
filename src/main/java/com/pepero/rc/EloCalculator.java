@@ -8,6 +8,10 @@ public class EloCalculator {
      * @return rating dto value
      */
     public static RatingCalculateResult calculate(MatchInfo match) {
+        if(match.calculateType() != RatingCalculateType.ELO) throw new
+                IllegalArgumentException("The given MatchInfo's type is incorrect! This class calculates only " +
+                "Elo system matches! (Glicko system is on com.pepero.rc.GlickoCalculator)");
+
         PlayerRating player1 = elo(match, true);
         PlayerRating player2 = elo(match, false);
 

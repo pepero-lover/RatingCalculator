@@ -6,16 +6,19 @@ import static com.pepero.rc.Glicko2Calculator.CONVERSION_FACTOR;
  * The class containing the value of player's rating and other values like rd, volatility, k
  */
 public class PlayerRating {
+    private final RatingCalculateType type;
+
     private final double rating;
     private final double rd;
     private final double volatility;
     private final double k;
 
-    private PlayerRating(double rating, double rd, double volatility, double k) {
+    private PlayerRating(double rating, double rd, double volatility, double k, RatingCalculateType type) {
         this.rating = rating;
         this.rd = rd;
         this.volatility = volatility;
         this.k = k;
+        this.type = type;
     }
 
     /**
@@ -25,7 +28,7 @@ public class PlayerRating {
      * @param k k value
      */
     public static PlayerRating elo(double rating, double k) {
-        return new PlayerRating(rating, 0, 0, k);
+        return new PlayerRating(rating, 0, 0, k, RatingCalculateType.ELO);
     }
 
     /**
@@ -35,7 +38,7 @@ public class PlayerRating {
      * @param rd rd value
      */
     public static PlayerRating glicko1(double rating, double rd) {
-        return new PlayerRating(rating, rd, -1, 0);
+        return new PlayerRating(rating, rd, -1, 0, RatingCalculateType.GLICKO_1);
     }
 
     /**
@@ -46,7 +49,7 @@ public class PlayerRating {
      * @param volatility volatility value
      */
     public static PlayerRating glicko2(double rating, double rd, double volatility) {
-        return new PlayerRating(rating, rd, volatility, 0);
+        return new PlayerRating(rating, rd, volatility, 0, RatingCalculateType.GLICKO_2);
     }
 
     double mu() {
@@ -71,6 +74,10 @@ public class PlayerRating {
 
     public double k() {
         return k;
+    }
+
+    public RatingCalculateType calculateType() {
+        return type;
     }
 
     @Override

@@ -7,11 +7,11 @@ public class MatchInfo {
     private final PlayerRating player1Rating;
     private final PlayerRating player2Rating;
     private final MatchWinner winner;
-    private final CalculateType calculateType;
+    private final RatingCalculateType calculateType;
     private final double tau;
 
     private MatchInfo(PlayerRating player1Rating, PlayerRating player2Rating, MatchWinner winner,
-                      CalculateType calculateType, double tau) {
+                      RatingCalculateType calculateType, double tau) {
         this.player1Rating = player1Rating;
         this.player2Rating = player2Rating;
         this.winner = winner;
@@ -27,7 +27,16 @@ public class MatchInfo {
      * @param winner winner data
      */
     public static MatchInfo elo(PlayerRating player1Rating, PlayerRating player2Rating, MatchWinner winner) {
-        return new MatchInfo(player1Rating, player2Rating, winner, CalculateType.ELO, 0.0);
+        if(player1Rating.calculateType() != RatingCalculateType.ELO) {
+            throw new IllegalArgumentException("The given player 1 rating isn't ELO type! (given : "
+                    + player1Rating.calculateType() + ")");
+        }
+        if(player2Rating.calculateType() != RatingCalculateType.ELO) {
+            throw new IllegalArgumentException("The given player 2 rating isn't ELO type! (given : "
+                    + player2Rating.calculateType() + ")");
+        }
+
+        return new MatchInfo(player1Rating, player2Rating, winner, RatingCalculateType.ELO, 0.0);
     }
 
     /**
@@ -38,7 +47,16 @@ public class MatchInfo {
      * @param winner winner data
      */
     public static MatchInfo glicko1(PlayerRating player1Rating, PlayerRating player2Rating, MatchWinner winner) {
-        return new MatchInfo(player1Rating, player2Rating, winner, CalculateType.GLICKO_1, 0.0);
+        if(player1Rating.calculateType() != RatingCalculateType.GLICKO_1) {
+            throw new IllegalArgumentException("The given player 1 rating isn't Glicko-1 type! (given : "
+                    + player1Rating.calculateType() + ")");
+        }
+        if(player2Rating.calculateType() != RatingCalculateType.GLICKO_1) {
+            throw new IllegalArgumentException("The given player 2 rating isn't Glicko-1 type! (given : "
+                    + player2Rating.calculateType() + ")");
+        }
+
+        return new MatchInfo(player1Rating, player2Rating, winner, RatingCalculateType.GLICKO_1, 0.0);
     }
 
     /**
@@ -51,7 +69,16 @@ public class MatchInfo {
      */
     public static MatchInfo glicko2(PlayerRating player1Rating, PlayerRating player2Rating, MatchWinner winner,
                                     double tau) {
-        return new MatchInfo(player1Rating, player2Rating, winner, CalculateType.GLICKO_2, tau);
+        if(player1Rating.calculateType() != RatingCalculateType.GLICKO_2) {
+            throw new IllegalArgumentException("The given player 1 rating isn't Glicko-2 type! (given : "
+                    + player1Rating.calculateType() + ")");
+        }
+        if(player2Rating.calculateType() != RatingCalculateType.GLICKO_2) {
+            throw new IllegalArgumentException("The given player 2 rating isn't Glicko-2 type! (given : "
+                    + player2Rating.calculateType() + ")");
+        }
+
+        return new MatchInfo(player1Rating, player2Rating, winner, RatingCalculateType.GLICKO_2, tau);
     }
 
     /**
@@ -63,7 +90,16 @@ public class MatchInfo {
      * @param winner winner data
      */
     public static MatchInfo glicko2(PlayerRating player1Rating, PlayerRating player2Rating, MatchWinner winner) {
-        return new MatchInfo(player1Rating, player2Rating, winner, CalculateType.GLICKO_2, 0.5);
+        if(player1Rating.calculateType() != RatingCalculateType.GLICKO_2) {
+            throw new IllegalArgumentException("The given player 1 rating isn't Glicko-2 type! (given : "
+                    + player1Rating.calculateType() + ")");
+        }
+        if(player2Rating.calculateType() != RatingCalculateType.GLICKO_2) {
+            throw new IllegalArgumentException("The given player 2 rating isn't Glicko-2 type! (given : "
+                    + player2Rating.calculateType() + ")");
+        }
+
+        return new MatchInfo(player1Rating, player2Rating, winner, RatingCalculateType.GLICKO_2, 0.5);
     }
 
 
@@ -79,7 +115,7 @@ public class MatchInfo {
         return winner;
     }
 
-    CalculateType calculateType() {
+    RatingCalculateType calculateType() {
         return calculateType;
     }
 

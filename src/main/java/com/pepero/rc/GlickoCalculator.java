@@ -12,11 +12,11 @@ public class GlickoCalculator {
     public static RatingCalculateResult calculate(MatchInfo match) {
         PlayerRating player1;
         PlayerRating player2;
-        if (match.calculateType() == CalculateType.GLICKO_1) {
+        if (match.calculateType() == RatingCalculateType.GLICKO_1) {
             player1 = glicko1(match, true);
             player2 = glicko1(match, false);
         }
-        else if (match.calculateType() == CalculateType.GLICKO_2){
+        else if (match.calculateType() == RatingCalculateType.GLICKO_2){
             player1 = glicko2(match, true);
             player2 = glicko2(match, false);
         } else {
