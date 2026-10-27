@@ -28,7 +28,7 @@ public class PlayerRating {
      * @param k k value
      */
     public static PlayerRating elo(double rating, double k) {
-        return new PlayerRating(rating, 0, 0, k, RatingCalculateType.ELO);
+        return new PlayerRating(rating, Double.NaN, Double.NaN, k, RatingCalculateType.ELO);
     }
 
     /**
@@ -38,7 +38,7 @@ public class PlayerRating {
      * @param rd rd value
      */
     public static PlayerRating glicko1(double rating, double rd) {
-        return new PlayerRating(rating, rd, -1, 0, RatingCalculateType.GLICKO_1);
+        return new PlayerRating(rating, rd, Double.NaN, Double.NaN, RatingCalculateType.GLICKO_1);
     }
 
     /**
@@ -49,7 +49,7 @@ public class PlayerRating {
      * @param volatility volatility value
      */
     public static PlayerRating glicko2(double rating, double rd, double volatility) {
-        return new PlayerRating(rating, rd, volatility, 0, RatingCalculateType.GLICKO_2);
+        return new PlayerRating(rating, rd, volatility, Double.NaN, RatingCalculateType.GLICKO_2);
     }
 
     double mu() {

@@ -44,7 +44,7 @@ public class GlickoCalculator {
 
     // the correction factor for reducing the influence of my rating when the opponent's RD is high
 
-    private static double g(double rd) {
+    private static double g1(double rd) {
         return 1 / (Math.sqrt(1 + 3 * q*q * rd*rd / (Math.PI * Math.PI)));
     }
 
@@ -52,7 +52,7 @@ public class GlickoCalculator {
         PlayerRating me = calculatePlayer1 ? match.player1Rating() : match.player2Rating();
         PlayerRating opp = calculatePlayer1 ? match.player2Rating() : match.player1Rating();
 
-        double gOpp = g(opp.rd());
+        double gOpp = g1(opp.rd());
 
         // calculate the difference of rating (delta r)
         double r = me.rating() - opp.rating();
@@ -97,26 +97,26 @@ public class GlickoCalculator {
         double phi = me.phi();
         double sigma = me.volatility();
 
+
+        double gPhi = g2(opp.phi());
+
+        // calculate winning chance
+        double expVal = E(mu, opp.mu(), gPhi);
+
         // calculate estimated variance
         // smaller when the game result is so predictable (like 2700 elo vs 200 elo)
         // and bigger when the game result is unpredictable (like 2000 elo vs 2000 elo)
-        double vInv = 0.0;
+        double vInv = gPhi * gPhi * expVal * (1.0 - expVal);
 
-        double gPhi = g(opp.phi());
-
-        // calculate winning chance
-        double expVal = E(mu, opp.mu(), opp.phi());
-
-        vInv += gPhi * gPhi * expVal * (1.0 - expVal);
 
         double v = 1.0 / vInv;
 
+        double score = match.winner().getMatchResultValue(calculatePlayer1);
+
         // estimated improvement (delta)
         // the subtracted value between expected winning chance, and the actual result
-        double deltaSum;
+        double deltaSum = gPhi * (score - expVal);
 
-        double score = match.winner().getMatchResultValue(calculatePlayer1);
-        deltaSum = g(opp.phi()) * (score - E(mu, opp.mu(), opp.phi()));
 
         double delta = v * deltaSum;
 
